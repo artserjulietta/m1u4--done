@@ -49,27 +49,49 @@ Cила покемона: {self.power}
         return self.img
     
     def attack(self, enemy):
+        if isinstance(enemy, Wizard):
+            chance = randint(1,5)
+            if chance == 1:
+                return "Покемон-волшебник применил щит в сражении"
         if enemy.hp > self.power:
             enemy.hp -= self.power
-            return f"Сражение @{self.pokemon_trainer} с @{enemy.pokemon_trainer}"
+            return f"""Сражение @{self.pokemon_trainer} с @{enemy.pokemon_trainer}
+Здоровье @{enemy.pokemon_trainer} теперь {enemy.hp}"""
         else:
             enemy.hp = 0
             return f"Победа @{self.pokemon_trainer} над @{enemy.pokemon_trainer}! "
 
 class Wizard(Pokemon):
+ 
+    def info(self):
+        return "У тебя покемон-волшебник \n\n" + super().info()
+
+
+class Fighter(Pokemon):
     def attack(self, enemy):
         super_power = randint(5,15)
         self.power += super_power
         result = super().attack(enemy)
         self.power -= super_power
-        return result
+        return result + f"\nБоец применил супер-атаку силой:{super_power} "
     
+    def info(self):
+        return "У тебя покемон-боец \n\n" + super().info()
 
-class Figher(Pokemon):
-    def attack(self, enemy):
-        power = self.power
-        self.power += randint(5,15)
-        result = super().attack(enemy)
-        self.power = power
-
+"""pok = Pokemon("user1")
+print(pok.info())
+print()
+wiz = Wizard("user2")
+print(wiz.info())
+print()
+fig = Fighter("user3")
+print(fig.info())
+print()
+print()
+print()
+print(pok.attack(wiz))
+print()
+print(wiz.attack(fig))
+print()
+print(fig.attack(pok))"""
 
